@@ -11,72 +11,29 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.athosprescinato.dictionmaster.R
 import com.athosprescinato.dictionmaster.service.constants.DictionConstants
+import com.athosprescinato.dictionmaster.service.repository.local.DictionMasterPreferences
 import com.athosprescinato.dictionmaster.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.activity_search.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class SearchActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mViewModel: SharedViewModel
+    private lateinit var mSharedPreferences: DictionMasterPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         mViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+        mSharedPreferences = DictionMasterPreferences(applicationContext)
 
+        checkTimeToReset()
         setListeners()
         observe()
-
-        val editSearchWord = findViewById<EditText>(R.id.editSearchWord)
-        val btSearch = findViewById<Button>(R.id.btSearch)
-
-        var languageSelected = DictionConstants.LANGUAGE.ENGLISH
-
-        val btnSelectLanguage = findViewById<Button>(R.id.btLanguage)
-
-        btnSelectLanguage.setOnClickListener {
-
-            //Inflate the dialog as custom view
-            val messageBoxView =
-                LayoutInflater.from(this).inflate(R.layout.custom_alertdialog, null)
-
-            //AlertDialogBuilder
-            val messageBoxBuilder = AlertDialog.Builder(this).setView(messageBoxView)
-
-            //show dialog
-            val messageBoxInstance = messageBoxBuilder.show()
-
-            val imbtnEnglishLanguage = messageBoxView.findViewById<ImageButton>(R.id.imbtnEnglishLanguage)
-            val imbtnFranchLanguage = messageBoxView.findViewById<ImageButton>(R.id.imbtnFranchLanguage)
-            val imbtnSpanishLanguage = messageBoxView.findViewById<ImageButton>(R.id.imbtnSpanishLanguage)
-
-            //set Listener
-
-            imbtnEnglishLanguage.setOnClickListener {
-                languageSelected = DictionConstants.LANGUAGE.ENGLISH
-                btnSelectLanguage.text = "ENGLISH"
-                btnSelectLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_en, 0, 0, 0)
-                Toast.makeText(this, "Selected English", Toast.LENGTH_SHORT).show()
-                messageBoxInstance.dismiss()
-            }
-            imbtnFranchLanguage.setOnClickListener {
-                languageSelected = DictionConstants.LANGUAGE.FRANCH
-                btnSelectLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fr, 0, 0, 0)
-                btnSelectLanguage.text = "FRANCH"
-
-                Toast.makeText(this, "Selected Franch", Toast.LENGTH_SHORT).show()
-                messageBoxInstance.dismiss()
-            }
-            imbtnSpanishLanguage.setOnClickListener {
-                languageSelected = DictionConstants.LANGUAGE.SPANISH
-                btnSelectLanguage.text = "SPANISH"
-                btnSelectLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_es, 0, 0, 0)
-                Toast.makeText(this, "Selected Spanish", Toast.LENGTH_SHORT).show()
-                messageBoxInstance.dismiss()
-            }
-        }
-
     }
 
     private fun setListeners() {
@@ -85,29 +42,87 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if(v.id == R.id.btSearch ){
+        if (v.id == R.id.btSearch) {
             doSearchWord()
+        } else if (v.id == R.id.btLanguage) {
+            callDialog()
+        }
+    }
+
+    private fun callDialog() {
+
+        btLanguage.setOnClickListener {
+            val messageBoxView =
+                LayoutInflater.from(this).inflate(R.layout.custom_alertdialog, null)
+
+            val messageBoxBuilder = AlertDialog.Builder(this).setView(messageBoxView)
+
+            val messageBoxInstance = messageBoxBuilder.show()
+
+            val imbtnEnglishLanguage =
+                messageBoxView.findViewById<ImageButton>(R.id.imbtnEnglishLanguage)
+            val imbtnFranchLanguage =
+                messageBoxView.findViewById<ImageButton>(R.id.imbtnFranchLanguage)
+            val imbtnSpanishLanguage =
+                messageBoxView.findViewById<ImageButton>(R.id.imbtnSpanishLanguage)
+
+            imbtnEnglishLanguage.setOnClickListener {
+                DictionConstants.LANGUAGE.CURRENT_LANGUAGE = DictionConstants.LANGUAGE.ENGLISH
+                btLanguage.text = DictionConstants.LANGUAGE.ENGLISH
+                btLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_en, 0, 0, 0)
+                Toast.makeText(this, "Selected English", Toast.LENGTH_SHORT).show()
+                messageBoxInstance.dismiss()
+            }
+            imbtnFranchLanguage.setOnClickListener {
+                DictionConstants.LANGUAGE.CURRENT_LANGUAGE = DictionConstants.LANGUAGE.FRANCH
+                btLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fr, 0, 0, 0)
+                btLanguage.text = DictionConstants.LANGUAGE.FRANCH
+
+                Toast.makeText(this, "Selected Franch", Toast.LENGTH_SHORT).show()
+                messageBoxInstance.dismiss()
+            }
+            imbtnSpanishLanguage.setOnClickListener {
+                DictionConstants.LANGUAGE.CURRENT_LANGUAGE = DictionConstants.LANGUAGE.SPANISH
+                btLanguage.text = DictionConstants.LANGUAGE.SPANISH
+                btLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_es, 0, 0, 0)
+                Toast.makeText(this, "Selected Spanish", Toast.LENGTH_SHORT).show()
+                messageBoxInstance.dismiss()
+            }
         }
     }
 
     private fun doSearchWord() {
         val word = editSearchWord.text.toString()
-        mViewModel.doSearchWord(word, "en-us")
+        mViewModel.doSearchWord(word)
     }
 
-    private fun observe(){
+    private fun observe() {
         mViewModel.searchWord.observe(this, Observer {
-            if(it != null){
+            if (it != null) {
+
+                // TODO Passar dados corretos
+
                 val definition =
                     "1) [uncountable, countable] a process of teaching, training and learning, especially in schools, colleges or universities, to improve knowledge and develop skills"
                 val intent = Intent(this@SearchActivity, ResultActivity::class.java)
                 intent.putExtra("id", it.id)
-                intent.putExtra("pronunciation", it.id)
+                intent.putExtra("pronunciation", it.word)
                 intent.putExtra("definition", definition)
                 startActivity(intent)
 
             }
         })
+
+    }
+
+    private fun checkTimeToReset() {
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val formattedDate = formatter.format(Calendar.getInstance().time)
+
+        if(!formattedDate.equals(mSharedPreferences.getTimeShared("time"))) {
+            mSharedPreferences.storeTime("time", formattedDate)
+            mSharedPreferences.store(DictionConstants.SHARED.LIMIT_KEY, 0)
+        }
 
     }
 
