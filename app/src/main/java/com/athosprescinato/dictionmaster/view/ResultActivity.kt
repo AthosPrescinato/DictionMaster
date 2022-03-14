@@ -1,12 +1,10 @@
 package com.athosprescinato.dictionmaster.view
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.athosprescinato.dictionmaster.R
 import kotlinx.android.synthetic.main.activity_result.*
-import kotlinx.android.synthetic.main.activity_search.*
 
 class ResultActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +44,6 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == R.id.btNewSearch) {
-            val intent = Intent(this@ResultActivity, SearchActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }

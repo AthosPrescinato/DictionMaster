@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.PurchaseActivity">
+
+    <ImageView
+        android:id="@+id/imageIcon"
+        android:layout_width="79dp"
+        android:layout_height="88dp"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@+id/imageTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_icon" />
+
+    <ImageView
+        android:id="@+id/imageTitle"
+        android:layout_width="368dp"
+        android:layout_height="44dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:paddingLeft="30dp"
+        android:scaleType="center"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        app:layout_constraintBottom_toTopOf="@+id/textUnlimited"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageIcon"
+        app:srcCompat="@drawable/ic_title" />
+
+
+    <Button
+        android:id="@+id/btSubscribe"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:backgroundTint="@color/buttonColorPrimary"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="SUBSCRIBE"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTryFree" />
+
+    <TextView
+        android:id="@+id/textUnlimited"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Subscribe now to get unlimited searches and full access to all features."
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textTryFree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageTitle" />
+
+    <TextView
+        android:id="@+id/textTryFree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Try 7 Days Free, then only $19,99 per year. Cancel anytime."
+        android:textAlignment="center"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btSubscribe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textUnlimited" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

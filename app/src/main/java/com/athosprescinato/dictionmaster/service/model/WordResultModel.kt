@@ -2,8 +2,8 @@ package com.athosprescinato.dictionmaster.service.model
 
 data class WordResultModel(
     val id: String,
-    //val metadata: Metadata,
-    //val results: List<Result>,
+    val metadata: Metadata,
+    val results: List<Result>,
     val word: String
 ) {
     data class Metadata(

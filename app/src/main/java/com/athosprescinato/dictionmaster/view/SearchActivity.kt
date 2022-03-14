@@ -68,7 +68,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
 
             imbtnEnglishLanguage.setOnClickListener {
                 DictionConstants.LANGUAGE.CURRENT_LANGUAGE = DictionConstants.LANGUAGE.ENGLISH
-                btLanguage.text = DictionConstants.LANGUAGE.ENGLISH
+                btLanguage.text = getString(R.string.btLanguage_Selection_en)
                 btLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_en, 0, 0, 0)
                 Toast.makeText(this, "Selected English", Toast.LENGTH_SHORT).show()
                 messageBoxInstance.dismiss()
@@ -76,14 +76,13 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
             imbtnFranchLanguage.setOnClickListener {
                 DictionConstants.LANGUAGE.CURRENT_LANGUAGE = DictionConstants.LANGUAGE.FRANCH
                 btLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fr, 0, 0, 0)
-                btLanguage.text = DictionConstants.LANGUAGE.FRANCH
-
+                btLanguage.text = getString(R.string.btLanguage_Selection_fr)
                 Toast.makeText(this, "Selected Franch", Toast.LENGTH_SHORT).show()
                 messageBoxInstance.dismiss()
             }
             imbtnSpanishLanguage.setOnClickListener {
                 DictionConstants.LANGUAGE.CURRENT_LANGUAGE = DictionConstants.LANGUAGE.SPANISH
-                btLanguage.text = DictionConstants.LANGUAGE.SPANISH
+                btLanguage.text = getString(R.string.btLanguage_Selection_es)
                 btLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_es, 0, 0, 0)
                 Toast.makeText(this, "Selected Spanish", Toast.LENGTH_SHORT).show()
                 messageBoxInstance.dismiss()
@@ -93,7 +92,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun doSearchWord() {
         val word = editSearchWord.text.toString()
-        mViewModel.doSearchWord(word)
+        mViewModel.doSearchWord(word, this)
     }
 
     private fun observe() {
@@ -124,6 +123,11 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
             mSharedPreferences.store(DictionConstants.SHARED.LIMIT_KEY, 0)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        editSearchWord.setText("")
     }
 
 

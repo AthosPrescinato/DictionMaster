@@ -24,24 +24,28 @@
         android:textSize="18dp"
         app:cornerRadius="38dp"
         app:iconPadding="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/editSearchWord"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
 
     <EditText
         android:id="@+id/editSearchWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed-light"
         android:hint="Type a word..."
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:textSize="32dp"
-        android:fontFamily="sans-serif-condensed-light"
         app:layout_constraintBottom_toTopOf="@+id/btSearch"
-        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btLanguage" />
 
@@ -58,5 +62,7 @@
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editSearchWord" />
 </androidx.constraintlayout.widget.ConstraintLayout>

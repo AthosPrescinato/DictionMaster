@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DictionMaster">
         <activity
+            android:name=".view.PurchaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.ResultActivity"
             android:exported="false" />
         <activity

@@ -1,9 +1,9 @@
 package com.athosprescinato.dictionmaster.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +12,7 @@ import com.athosprescinato.dictionmaster.service.listener.APIListener
 import com.athosprescinato.dictionmaster.service.model.WordResultModel
 import com.athosprescinato.dictionmaster.service.repository.WordResultRepository
 import com.athosprescinato.dictionmaster.service.repository.local.DictionMasterPreferences
-import com.athosprescinato.dictionmaster.view.ResultActivity
+import com.athosprescinato.dictionmaster.view.PurchaseActivity
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -23,8 +23,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     var searchWord: LiveData<WordResultModel> = mSearchWord
 
 
-    fun doSearchWord(word: String) {
-        if( mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 2 ) {
+    fun doSearchWord(word: String, context: Context) {
+        if(word.equals("reset")) {
+            mSharedPreferences.store(
+                DictionConstants.SHARED.LIMIT_KEY,
+                0
+            )
+        }
+        if (mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 10) {
             mWordResultRepository.searchWord(
                 word,
                 DictionConstants.LANGUAGE.CURRENT_LANGUAGE,
@@ -39,16 +45,19 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     }
 
                     override fun onFailure(str: String) {
-                    //TODO Implementar alerta visual de erro ao usuario
 
                     }
 
                 })
+        } else {
+            Log.i(
+                "[x] Limite Atingido",
+                mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY).toString()
+            )
+            val intent = Intent(context, PurchaseActivity::class.java)
+            context.startActivity(intent)
+
         }
-
-        // TODO Implementar Tela de Compra
-        Log.i("[x] Limite Atingido", mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY).toString())
-
 
     }
 
