@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.SplashScreenActivity">
+
+    <ImageView
+        android:id="@+id/imageIcon"
+        android:layout_width="79dp"
+        android:layout_height="88dp"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@+id/imageTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_icon" />
+
+    <ImageView
+        android:id="@+id/imageTitle"
+        android:layout_width="368dp"
+        android:layout_height="44dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:paddingLeft="30dp"
+        android:scaleType="center"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        app:layout_constraintBottom_toTopOf="@+id/textBy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageIcon"
+        app:srcCompat="@drawable/ic_title" />
+
+    <TextView
+        android:id="@+id/textBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="41dp"
+        android:text="by Athos Prescinato"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

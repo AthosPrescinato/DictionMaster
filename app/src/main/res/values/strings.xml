@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Diction Master</string>
+    <string name="btLanguage_Selection_en">ENGLISH</string>
+    <string name="btLanguage_Selection_fr">FRANCH</string>
+    <string name="btLanguage_Selection_es">SPANISH</string>
+    <string name="ERROR_UNEXPECTED">Um erro inesperado ocorreu. Tente novamente mais tarde.</string>
+
 </resources>
