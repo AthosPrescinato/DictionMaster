@@ -14,6 +14,7 @@ import com.athosprescinato.dictionmaster.service.constants.DictionConstants
 import com.athosprescinato.dictionmaster.service.repository.local.DictionMasterPreferences
 import com.athosprescinato.dictionmaster.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.activity_search.*
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -98,15 +99,8 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private fun observe() {
         mViewModel.searchWord.observe(this, Observer {
             if (it != null) {
-
-                // TODO Passar dados corretos
-
-                val definition =
-                    "1) [uncountable, countable] a process of teaching, training and learning, especially in schools, colleges or universities, to improve knowledge and develop skills"
                 val intent = Intent(this@SearchActivity, ResultActivity::class.java)
-                intent.putExtra("id", it.id)
-                intent.putExtra("pronunciation", it.word)
-                intent.putExtra("definition", definition)
+                intent.putExtra("bodyResponse", it as Serializable)
                 startActivity(intent)
 
             }

@@ -32,7 +32,7 @@ class WordResultRepository(val context: Context) {
                     return
                 }
 
-                response.body()?.let { listener.onSuccess(it) }
+                 response.body()?.let { listener.onSuccess(it) }
 
 
             }

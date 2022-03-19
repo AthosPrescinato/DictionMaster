@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.athosprescinato.dictionmaster.R
+import com.athosprescinato.dictionmaster.service.model.WordResultModel
 import kotlinx.android.synthetic.main.activity_result.*
 
 class ResultActivity : AppCompatActivity(), View.OnClickListener {
@@ -13,28 +14,21 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
 
         setListeners()
 
-        val getExtraId = intent.getStringExtra("id")
-        val getPronunciation = intent.getStringExtra("pronunciation")
-
-        val getdefinition = intent.getStringExtra("definition")
-        val getdefinition2 = intent.getStringExtra("definition")
-        val getdefinition3 = intent.getStringExtra("definition")
-
-        val getdetails = intent.getStringExtra("details")
-        val getdetails2 = intent.getStringExtra("details")
-        val getdetails3 = intent.getStringExtra("details")
+        val bodyResponse = intent.extras?.get("bodyResponse") as WordResultModel
 
 
-        textSearchWord.text = getExtraId
-        textPronunciation.text = getPronunciation
+//        textSearchWord.text = getExtraId
+//        textPronunciation.text = getPronunciation
+//
+//        textMeaning_1.text = getdefinition
+//        textMeaning_2.text = getdefinition2
+//        textMeaning_3.text = getdefinition3
+//
 
-        textMeaning_1.text = getdefinition
-        textMeaning_2.text = getdefinition2
-        textMeaning_3.text = getdefinition3
+        textDetails_1.text = bodyResponse.id
 
-        textDetails_1.text = getdetails
-        textDetails_2.text = getdetails2
-        textDetails_3.text = getdetails3
+//        textDetails_2.text = getdetails2
+//        textDetails_3.text = getdetails3
 
     }
 

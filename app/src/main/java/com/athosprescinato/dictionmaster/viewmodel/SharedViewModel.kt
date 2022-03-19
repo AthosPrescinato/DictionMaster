@@ -24,7 +24,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
 
     fun doSearchWord(word: String, context: Context) {
-        // Implementação apenas para testes internos
+//        Implementação apenas para testes internos
 //        if(word.equals("reset")) {
 //            mSharedPreferences.store(
 //                DictionConstants.SHARED.LIMIT_KEY,
