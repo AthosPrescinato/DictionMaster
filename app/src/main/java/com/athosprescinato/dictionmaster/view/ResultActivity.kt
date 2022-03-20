@@ -63,22 +63,21 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun playAudio(data: WordResultModel) {
-        if(data.results[0].lexicalEntries[0].entries[0].pronunciations!![1].audioFile != null) {
+        try {
             val audioUrl = data.results[0].lexicalEntries[0].entries[0].pronunciations!![1].audioFile
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            try {
+
                 mediaPlayer!!.setDataSource(audioUrl)
                 mediaPlayer!!.prepare()
                 mediaPlayer!!.start()
             } catch (e: IOException){
                 e.printStackTrace()
-            }
 
-        } else {
-            Toast.makeText(this, "Audio não encontrado!", Toast.LENGTH_SHORT).show()
+        } catch (e: NullPointerException) {
+            Toast.makeText(this, "Audio não encontrado! $e", Toast.LENGTH_SHORT).show()
+
         }
-
 
     }
 
