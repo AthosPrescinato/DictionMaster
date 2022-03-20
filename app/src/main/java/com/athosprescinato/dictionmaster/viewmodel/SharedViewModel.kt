@@ -25,12 +25,12 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun doSearchWord(word: String, context: Context) {
 //        Implementação apenas para testes internos
-//        if(word.equals("reset")) {
-//            mSharedPreferences.store(
-//                DictionConstants.SHARED.LIMIT_KEY,
-//                0
-//            )
-//        }
+        if(word.equals("reset")) {
+            mSharedPreferences.store(
+                DictionConstants.SHARED.LIMIT_KEY,
+                0
+            )
+        }
 
         if (mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 10) {
             mWordResultRepository.searchWord(
@@ -60,6 +60,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             context.startActivity(intent)
 
         }
+
+    }
+
+
+    fun validateData(data: WordResultModel){
 
     }
 
