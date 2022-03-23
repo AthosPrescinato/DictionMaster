@@ -33,7 +33,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_shape"
-        app:icon="@drawable/ic_baseline_volume_up_24"
+        app:icon="@drawable/ic_play"
+        android:padding="15dp"
         app:layout_constraintEnd_toStartOf="@+id/textPronunciation"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,8 +46,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:text="Pronunciation"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="#66052D39"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -144,7 +146,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textDetails_3" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textThatsFor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -163,19 +165,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:text="Try another search now!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textThatsFor" />
 
     <Button
         android:id="@+id/btNewSearch"
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="27dp"
         android:layout_marginBottom="24dp"
         android:backgroundTint="@color/buttonColorPrimary"

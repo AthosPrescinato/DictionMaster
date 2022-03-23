@@ -1,8 +1,11 @@
 package com.athosprescinato.dictionmaster.view
 
 import android.content.Intent
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -35,11 +38,17 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         checkTimeToReset()
         setListeners()
         observe()
+
+
+
+
+
     }
 
     private fun setListeners() {
         btSearch.setOnClickListener(this)
         btLanguage.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View) {
