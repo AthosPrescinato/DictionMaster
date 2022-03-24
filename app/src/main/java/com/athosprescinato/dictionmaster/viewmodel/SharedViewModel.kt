@@ -12,6 +12,7 @@ import com.athosprescinato.dictionmaster.service.listener.APIListener
 import com.athosprescinato.dictionmaster.service.model.WordResultModel
 import com.athosprescinato.dictionmaster.service.repository.WordResultRepository
 import com.athosprescinato.dictionmaster.service.repository.local.DictionMasterPreferences
+import com.athosprescinato.dictionmaster.service.repository.local.ResultWordCache
 import com.athosprescinato.dictionmaster.view.PurchaseActivity
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
@@ -24,14 +25,16 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
 
     fun doSearchWord(word: String, context: Context) {
-//        Implementação apenas para testes internos
-        if(word.equals("reset")) {
-            mSharedPreferences.store(
-                DictionConstants.SHARED.LIMIT_KEY,
-                0
-            )
+
+        //Check o cache da busca da palavra
+       val cachedWord = ResultWordCache.wordMap[word]
+        if(cachedWord != null){
+            mSearchWord.value = cachedWord
+            Log.i("[x] Cached Word", word)
+            return
         }
 
+        //Faz a chamada a net
         if (mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 10) {
             mWordResultRepository.searchWord(
                 word,
@@ -39,6 +42,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 object : APIListener<WordResultModel> {
                     override fun onSuccess(model: WordResultModel) {
                         mSearchWord.value = model
+                        ResultWordCache.wordMap[word] = model
                         DictionConstants.SHARED.SEARCHTIMES++
                         mSharedPreferences.store(
                             DictionConstants.SHARED.LIMIT_KEY,

@@ -101,7 +101,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun doSearchWord() {
-        val word = editSearchWord.text.toString()
+        val word = editSearchWord.text.toString().lowercase()
         mViewModel.doSearchWord(word, this)
     }
 
