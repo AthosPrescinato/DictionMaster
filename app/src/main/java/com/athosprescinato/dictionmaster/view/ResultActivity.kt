@@ -154,11 +154,13 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
         try {
             val audioUrl =
                 data.results[0].lexicalEntries[0].entries[0].pronunciations!![1].audioFile
-            mediaPlayer = MediaPlayer()
-            mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            mediaPlayer!!.setDataSource(audioUrl)
-            mediaPlayer!!.prepare()
-            mediaPlayer!!.start()
+            if(audioUrl != null) {
+                mediaPlayer = MediaPlayer()
+                mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+                mediaPlayer!!.setDataSource(audioUrl)
+                mediaPlayer!!.prepare()
+                mediaPlayer!!.start()
+            }
         } catch (e: IOException) {
             e.printStackTrace()
 

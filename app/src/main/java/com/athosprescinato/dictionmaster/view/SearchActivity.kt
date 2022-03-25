@@ -40,9 +40,6 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         observe()
 
 
-
-
-
     }
 
     private fun setListeners() {
