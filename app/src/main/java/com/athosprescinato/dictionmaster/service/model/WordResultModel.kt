@@ -51,13 +51,13 @@ data class WordResultModel(
 
     data class Sense(
         val definitions: List<String>,
-        val id: String,
+        //val id: String,
         val subsenses: List<Subsense>? = null
     ) : Serializable
 
     data class Subsense(
         val definitions: List<String>,
-        val id: String
+       // val id: String
     ) : Serializable
 
 }

@@ -26,15 +26,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun doSearchWord(word: String, context: Context) {
 
-        //Check o cache da busca da palavra
-       val cachedWord = ResultWordCache.wordMap[word]
-        if(cachedWord != null){
+        val cachedWord = ResultWordCache.wordMap[word]
+        if (cachedWord != null) {
             mSearchWord.value = cachedWord
             Log.i("[x] Cached Word", word)
             return
         }
 
-        //Faz a chamada a net
         if (mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 10) {
             mWordResultRepository.searchWord(
                 word,
@@ -67,9 +65,5 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-
-    fun validateData(data: WordResultModel){
-
-    }
 
 }

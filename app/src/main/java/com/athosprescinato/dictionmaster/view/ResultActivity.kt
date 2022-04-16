@@ -1,26 +1,31 @@
 package com.athosprescinato.dictionmaster.view
 
 import android.annotation.SuppressLint
-import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.athosprescinato.dictionmaster.R
 import com.athosprescinato.dictionmaster.service.model.WordResultModel
 import com.athosprescinato.dictionmaster.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.activity_result.*
-import java.io.IOException
+
 
 private lateinit var mViewModel: SharedViewModel
 private lateinit var mediaPlayer: MediaPlayer
+private var audioUrl: String = ""
+private var subSenseList: MutableList<String> = arrayListOf()
+private val regex = Regex("[^A-Za-z0-9 •\n]")
+private lateinit var meaningWord: String
 
 
 class ResultActivity : AppCompatActivity(), View.OnClickListener {
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,99 +37,106 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
 
         setListeners()
 
-        textSearchWord.text = wordBodyResponse.id.replaceFirstChar { it.uppercase() }
-        textPronunciation.text =
-            "/" + wordBodyResponse.results[0].lexicalEntries[0].entries[0].pronunciations!![1].phoneticSpelling + "/"
-        textThatsFor.text = "That's it for \"" + wordBodyResponse.id + "\"!"
-
         try {
-            validateData(textMeaning_1, wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses!![0].definitions[0])
-        }
-        catch (e: Exception) {
-            when(e) {
-                is NullPointerException,
-                is RuntimeException,
-                is IndexOutOfBoundsException -> {
-                    e.printStackTrace()
-                    textMeaning_1.text = ""
+            textSearchWord.text = wordBodyResponse.id.replaceFirstChar { it.uppercase() }
+            textThatsFor.text = "That's it for \"" + wordBodyResponse.id + "\"!"
 
-                }
-            }
-        }
-
-        try {
-            validateData(textMeaning_2, wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses!![1].definitions[0])
-        }
-        catch (e: Exception) {
-                when(e) {
-                    is NullPointerException,
-                    is RuntimeException,
-                    is IndexOutOfBoundsException -> {
-                        e.printStackTrace()
-                        textMeaning_2.text = ""
+            try {
+                val pronunciation: List<WordResultModel.Pronunciation> =
+                    wordBodyResponse.results[0].lexicalEntries[0].entries[0].pronunciations!!
+                for (pronunciations in pronunciation) {
+                    if (pronunciations.audioFile != null) {
+                        textPronunciation.text = "/" + pronunciations.phoneticSpelling + "/"
+                        audioUrl = pronunciations.audioFile
+                        btPlayPronunciations.visibility = View.VISIBLE
+                        textPronunciation.visibility = View.VISIBLE
                     }
                 }
-        }
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+                Log.e("ERROR", e.toString())
+            }
 
-        try {
-            validateData(textMeaning_3, wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses!![2].definitions[0])
-        }
-        catch (e: Exception) {
-            when(e) {
+
+            val senses: List<WordResultModel.Sense> =
+                wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses
+
+            for ((index, definitions) in senses.withIndex()) when (index) {
+                0 -> {
+                    meaningWord = definitions.definitions.toString()
+                    textMeaning_1.text =
+                        "1) " + meaningWord.replace(regex, "").replaceFirstChar { it.uppercase() }
+
+                    for (subsensesDefinitions in definitions.subsenses!!) {
+                        subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                    }
+
+                    val detailsResponse = regex.replace(subSenseList.toString(), "")
+                    textDetails_1.text = detailsResponse
+
+
+                    if (meaningWord.isNotEmpty())
+                        textMeaning_1.visibility = View.VISIBLE
+                    if (detailsResponse.isNotEmpty())
+                        textDetails_1.visibility = View.VISIBLE
+
+                }
+
+                1 -> {
+                    meaningWord = definitions.definitions.toString()
+                    textMeaning_2.text =
+                        "2) " + meaningWord.replace(regex, "").replaceFirstChar { it.uppercase() }
+
+                    subSenseList.clear()
+                    for (subsensesDefinitions in definitions.subsenses!!) {
+                        subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                    }
+
+                    val detailsResponse = regex.replace(subSenseList.toString(), "")
+                    textDetails_2.text = detailsResponse
+
+                    if (meaningWord.isNotEmpty())
+                        textMeaning_2.visibility = View.VISIBLE
+                    if (detailsResponse.isNotEmpty())
+                        textDetails_2.visibility = View.VISIBLE
+
+                }
+
+                2 -> {
+                    meaningWord = definitions.definitions.toString()
+                    textMeaning_3.text =
+                        "3) " + meaningWord.replace(regex, "").replaceFirstChar { it.uppercase() }
+
+                    subSenseList.clear()
+                    for (subsensesDefinitions in definitions.subsenses!!) {
+                        subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                    }
+
+                    val detailsResponse = regex.replace(subSenseList.toString(), "")
+                    textDetails_3.text = detailsResponse
+
+                    if (meaningWord.isNotEmpty())
+                        textMeaning_3.visibility = View.VISIBLE
+                    if (detailsResponse.isNotEmpty())
+                        textDetails_3.visibility = View.VISIBLE
+
+                }
+
+            }
+
+
+        } catch (e: Exception) {
+            when (e) {
                 is NullPointerException,
                 is RuntimeException,
                 is IndexOutOfBoundsException -> {
                     e.printStackTrace()
-                    textMeaning_3.text = ""
+
 
                 }
             }
         }
 
-        try {
-            validateData(textDetails_1, wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses[0].subsenses!![0].definitions[0])
-        }
-        catch (e: Exception) {
-            when(e) {
-                is NullPointerException,
-                is RuntimeException,
-                is IndexOutOfBoundsException -> {
-                    e.printStackTrace()
-                    textDetails_1.text = ""
-
-                }
-            }
-        }
-
-        try {
-            validateData(textDetails_2, wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses[0].subsenses!![1].definitions[0])
-        }
-        catch (e: Exception) {
-            when(e) {
-                is NullPointerException,
-                is RuntimeException,
-                is IndexOutOfBoundsException -> {
-                    e.printStackTrace()
-                    textDetails_2.text = ""
-
-                }
-            }
-        }
-
-        try {
-            validateData(textDetails_3, wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses[0].subsenses!![2].definitions[0])
-        }
-        catch (e: Exception) {
-            when(e) {
-                is NullPointerException,
-                is RuntimeException,
-                is IndexOutOfBoundsException -> {
-                    e.printStackTrace()
-                    textDetails_3.text = ""
-
-                }
-            }
-        }
 
     }
 
@@ -137,36 +149,31 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
         if (v.id == R.id.btNewSearch) {
             finish()
         } else if (v.id == R.id.btPlayPronunciations) {
-            playAudio(intent.extras?.get("bodyResponse") as WordResultModel)
+            playAudio(audioUrl)
 
         }
     }
 
-    private fun validateData(view: TextView, data: String) {
-        view.text = data
-    }
 
 
-
-
-
-    private fun playAudio(data: WordResultModel) {
+    private fun playAudio(audioUrl: String) {
         try {
-            val audioUrl =
-                data.results[0].lexicalEntries[0].entries[0].pronunciations!![1].audioFile
-            if(audioUrl != null) {
-                mediaPlayer = MediaPlayer()
-                mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
-                mediaPlayer!!.setDataSource(audioUrl)
-                mediaPlayer!!.prepare()
-                mediaPlayer!!.start()
+
+            mediaPlayer = MediaPlayer()
+            //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            mediaPlayer.setDataSource(audioUrl)
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+
+        } catch (e: Exception) {
+            when (e) {
+                is NullPointerException,
+                is RuntimeException,
+                is IndexOutOfBoundsException -> {
+                    Toast.makeText(this, "Audio não encontrado!", Toast.LENGTH_LONG).show()
+                    Log.i("[x] Error AudioFile", e.toString())
+                }
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-
-        } catch (e: NullPointerException) {
-            Toast.makeText(this, "Audio não encontrado! $e", Toast.LENGTH_SHORT).show()
-
         }
 
     }

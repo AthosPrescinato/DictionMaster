@@ -4,5 +4,8 @@
     <string name="btLanguage_Selection_fr">FRANCH</string>
     <string name="btLanguage_Selection_es">SPANISH</string>
     <string name="ERROR_UNEXPECTED">Um erro inesperado ocorreu. Tente novamente mais tarde.</string>
+    <string name="TRY_ANOTHER_SEARCH">Try another search now!</string>
+    <string name="NEW_SEARCH">NEW SEARCH!</string>
+
 
 </resources>
