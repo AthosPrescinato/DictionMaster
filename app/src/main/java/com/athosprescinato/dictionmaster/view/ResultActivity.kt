@@ -58,10 +58,10 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
             }
 
 
-            val senses: List<WordResultModel.Sense> =
+            val senses: List<WordResultModel.Sense>? =
                 wordBodyResponse.results[0].lexicalEntries[0].entries[0].senses
 
-            for ((index, definitions) in senses.withIndex()) when (index) {
+            for ((index, definitions) in senses!!.withIndex()) when (index) {
                 0 -> {
                     meaningWord = definitions.definitions.toString()
                     textMeaning_1.text =

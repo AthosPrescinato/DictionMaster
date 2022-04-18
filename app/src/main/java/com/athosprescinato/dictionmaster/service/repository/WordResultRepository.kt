@@ -29,6 +29,8 @@ class WordResultRepository(val context: Context) {
                 if (!response.isSuccessful) {
                     Toast.makeText(context, "Sem sucesso - Tente novamente", Toast.LENGTH_SHORT)
                         .show()
+
+                    Log.i("Error", response.toString())
                     return
                 }
                 response.body()?.let { listener.onSuccess(it) }

@@ -34,7 +34,7 @@ data class WordResultModel(
 
     data class Entry(
         val pronunciations: List<Pronunciation>? = null,
-        val senses: List<Sense>
+        val senses: List<Sense>? = null,
     ) : Serializable
 
     data class LexicalCategory(
