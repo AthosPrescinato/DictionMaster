@@ -22,6 +22,7 @@ private var audioUrl: String = ""
 private var subSenseList: MutableList<String> = arrayListOf()
 private val regex = Regex("[^A-Za-z0-9 •\n]")
 private lateinit var meaningWord: String
+private var pronunciation: List<WordResultModel.Pronunciation> = emptyList()
 
 
 class ResultActivity : AppCompatActivity(), View.OnClickListener {
@@ -38,24 +39,30 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
         setListeners()
 
         try {
-            textSearchWord.text = wordBodyResponse.id.replaceFirstChar { it.uppercase() }
-            textThatsFor.text = "That's it for \"" + wordBodyResponse.id + "\"!"
+            textSearchWord.text = wordBodyResponse.id.replace("_", " ").replaceFirstChar { it.uppercase() }
+            textThatsFor.text = "That's it for \"" + wordBodyResponse.id.replace("_", " ") + "\"!"
 
             try {
-                val pronunciation: List<WordResultModel.Pronunciation> =
-                    wordBodyResponse.results[0].lexicalEntries[0].entries[0].pronunciations!!
-                for (pronunciations in pronunciation) {
-                    if (pronunciations.audioFile != null) {
-                        textPronunciation.text = "/" + pronunciations.phoneticSpelling + "/"
-                        audioUrl = pronunciations.audioFile
-                        btPlayPronunciations.visibility = View.VISIBLE
-                        textPronunciation.visibility = View.VISIBLE
+
+                if(!wordBodyResponse.results[0].lexicalEntries[0].entries[0].pronunciations?.isNullOrEmpty()!!){
+                    pronunciation = wordBodyResponse.results[0].lexicalEntries[0].entries[0].pronunciations!!
+                    for (pronunciations in pronunciation!!) {
+                        if (pronunciations.audioFile != null) {
+                            textPronunciation.text = "/" + pronunciations.phoneticSpelling + "/"
+                            audioUrl = pronunciations.audioFile
+                            btPlayPronunciations.visibility = View.VISIBLE
+                            textPronunciation.visibility = View.VISIBLE
+                        }
                     }
                 }
+
             } catch (e: NullPointerException) {
                 e.printStackTrace()
                 Log.e("ERROR", e.toString())
             }
+
+
+
 
 
             val senses: List<WordResultModel.Sense>? =
@@ -67,18 +74,20 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
                     textMeaning_1.text =
                         "1) " + meaningWord.replace(regex, "").replaceFirstChar { it.uppercase() }
 
-                    for (subsensesDefinitions in definitions.subsenses!!) {
-                        subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                    if(!definitions.subsenses.isNullOrEmpty()) {
+                        for (subsensesDefinitions in definitions.subsenses!!) {
+                            subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                        }
+
+                        val detailsResponse = regex.replace(subSenseList.toString(), "")
+                        textDetails_1.text = detailsResponse
+
+                        if (detailsResponse.isNotEmpty())
+                            textDetails_1.visibility = View.VISIBLE
                     }
-
-                    val detailsResponse = regex.replace(subSenseList.toString(), "")
-                    textDetails_1.text = detailsResponse
-
-
                     if (meaningWord.isNotEmpty())
                         textMeaning_1.visibility = View.VISIBLE
-                    if (detailsResponse.isNotEmpty())
-                        textDetails_1.visibility = View.VISIBLE
+
 
                 }
 
@@ -87,18 +96,21 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
                     textMeaning_2.text =
                         "2) " + meaningWord.replace(regex, "").replaceFirstChar { it.uppercase() }
 
-                    subSenseList.clear()
-                    for (subsensesDefinitions in definitions.subsenses!!) {
-                        subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                    if(!definitions.subsenses.isNullOrEmpty()) {
+                        subSenseList.clear()
+                        for (subsensesDefinitions in definitions.subsenses!!) {
+                            subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                        }
+                        val detailsResponse = regex.replace(subSenseList.toString(), "")
+                        textDetails_2.text = detailsResponse
+
+                        if (detailsResponse.isNotEmpty())
+                            textDetails_2.visibility = View.VISIBLE
                     }
-
-                    val detailsResponse = regex.replace(subSenseList.toString(), "")
-                    textDetails_2.text = detailsResponse
-
                     if (meaningWord.isNotEmpty())
                         textMeaning_2.visibility = View.VISIBLE
-                    if (detailsResponse.isNotEmpty())
-                        textDetails_2.visibility = View.VISIBLE
+
+
 
                 }
 
@@ -107,18 +119,21 @@ class ResultActivity : AppCompatActivity(), View.OnClickListener {
                     textMeaning_3.text =
                         "3) " + meaningWord.replace(regex, "").replaceFirstChar { it.uppercase() }
 
-                    subSenseList.clear()
-                    for (subsensesDefinitions in definitions.subsenses!!) {
-                        subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                    if(!definitions.subsenses.isNullOrEmpty()) {
+                        subSenseList.clear()
+                        for (subsensesDefinitions in definitions.subsenses!!) {
+                            subSenseList.add("• " + subsensesDefinitions.definitions.toString() + "\n")
+                        }
+
+                        val detailsResponse = regex.replace(subSenseList.toString(), "")
+                        textDetails_3.text = detailsResponse
+
+                        if (detailsResponse.isNotEmpty())
+                            textDetails_3.visibility = View.VISIBLE
                     }
-
-                    val detailsResponse = regex.replace(subSenseList.toString(), "")
-                    textDetails_3.text = detailsResponse
-
                     if (meaningWord.isNotEmpty())
                         textMeaning_3.visibility = View.VISIBLE
-                    if (detailsResponse.isNotEmpty())
-                        textDetails_3.visibility = View.VISIBLE
+
 
                 }
 

@@ -33,7 +33,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             return
         }
 
-        if (mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 10) {
+        if (mSharedPreferences.get(DictionConstants.SHARED.LIMIT_KEY) < 2) {
             mWordResultRepository.searchWord(
                 word,
                 DictionConstants.LANGUAGE.CURRENT_LANGUAGE,
